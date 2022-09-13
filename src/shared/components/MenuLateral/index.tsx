@@ -1,15 +1,17 @@
 import {
-    Avatar,
-    Divider,
-    Drawer,
-    Icon,
-    List,
-    ListItemButton,
-    ListItemIcon,
-    ListItemText,
-    useTheme
+  Avatar,
+  Divider,
+  Drawer,
+  Icon,
+  List,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+  useMediaQuery,
+  useTheme
 } from "@mui/material";
 import { Box } from "@mui/system";
+import { useDrawerContext } from "../../contexts/DrawerContext";
 
 interface IProps {
   children: React.ReactNode;
@@ -17,9 +19,15 @@ interface IProps {
 
 export const MenuLateral = ({ children }: IProps) => {
   const theme = useTheme();
+  const smDown = useMediaQuery(theme.breakpoints.down("sm"));
+  const { isDrawerOpen, toogleDrawerOpen } = useDrawerContext();
   return (
     <>
-      <Drawer variant="permanent">
+      <Drawer
+        open={isDrawerOpen}
+        variant={smDown ? "temporary" : "permanent"}
+        onClose={toogleDrawerOpen}
+      >
         <Box
           width={theme.spacing(28)}
           height="100%"
@@ -51,7 +59,7 @@ export const MenuLateral = ({ children }: IProps) => {
           </Box>
         </Box>
       </Drawer>
-      <Box height="100vh" marginLeft={theme.spacing(28)}>
+      <Box height="100vh" marginLeft={smDown ? 0 : theme.spacing(28)}>
         {children}
       </Box>
     </>
